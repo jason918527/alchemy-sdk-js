@@ -17,22 +17,6 @@ export class PaymasterNamespace {
   constructor(private readonly config: AlchemyConfig) {}
 
   /**
-   * Used to get the supported entry point addresses for the alchemy paymaster
-   * services.
-   *
-   * Returns supported Entry Point addresses by the alchemy paymaster service
-   * for a given chain.
-   */
-  async getSupportedEntryPoints(): Promise<string[]> {
-    const provider = await this.config.getProvider();
-    return provider._send(
-      'alchemy_paymasterSupportedEntryPoints',
-      [],
-      'paymasterSupportedEntryPoints'
-    );
-  }
-
-  /**
    * Used to get the the paymasterAndData for the sponsorship with the alchemy paymaster.
    *
    * Requests sponsorship for a UserOperation. Returns paymasterAndData
@@ -45,24 +29,24 @@ export class PaymasterNamespace {
    * @param userOperation Partial UserOperation object, missing paymasterAndData
    * and signature fields
    */
-  async generateUserOperationSponsorshipData(
+  async requestPaymasterAndData(
     policyId: string,
-    entryPointAddress: string,
+    entryPoint: string,
     paymasterTrackedSenderNonce: number,
     userOperation: PaymasterRequestUserOperation
   ): Promise<PaymasterDataResponse> {
     const provider = await this.config.getProvider();
     return provider._send(
-      'alchemy_requestUserOperationSponsorship',
+      'alchemy_requestPaymasterAndData',
       [
         {
           policyId,
-          entryPointAddress,
           paymasterTrackedSenderNonce,
+          entryPoint,
           userOperation
         }
       ],
-      'requestUserOperationSponsorship'
+      'requestPaymasterAndData'
     );
   }
 }

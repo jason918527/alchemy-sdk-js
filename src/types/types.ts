@@ -2593,9 +2593,9 @@ export interface DebugPrestate {
 
 export interface PaymasterRequestUserOperation {
   sender: string;
-  nonce: number;
-  initCode: ArrayBuffer;
-  callData: ArrayBuffer;
+  nonce: string;
+  initCode: string;
+  callData: string;
   callGasLimit: number;
   verificationGasLimit: number;
   preVerificationGas: number;
@@ -2604,8 +2604,83 @@ export interface PaymasterRequestUserOperation {
 }
 
 export type PaymasterDataResponse = {
-  paymasterAndData: ArrayBuffer;
+  paymasterAndData: string;
 };
+
+export interface UserOperationRequest {
+  sender: string;
+  nonce: string;
+  initCode: string;
+  callData: string;
+  callGasLimit: number;
+  verificationGasLimit: number;
+  preVerificationGas: number;
+  maxFeePerGas: number;
+  maxPriorityFeePerGas: number;
+  paymasterAndData: string;
+  signature: string;
+}
+
+export interface UserOperation {
+  sender: string;
+  nonce: string;
+  initCode: string;
+  callData: string;
+  callGasLimit: number;
+  verificationGasLimit: number;
+  preVerificationGas: number;
+  maxFeePerGas: number;
+  maxPriorityFeePerGas: number;
+  paymasterAndData: string;
+  signature: string;
+  entryPoint: string;
+  blockNumber: number;
+  blockHash: string;
+  transactionHash: string;
+}
+
+export interface UserOperationReceipt {
+  userOpHash: string;
+  entryPoint: string;
+  sender: string;
+  nonce: number;
+  paymaster: string;
+  actualGasCost: number;
+  actualGasUsed: number;
+  success: boolean;
+  reason: string;
+  logs: string[];
+  receipt: UserOperationReceiptObject;
+}
+
+export interface UserOperationReceiptObject {
+  blockHash: string;
+  blockNumber: string;
+  transactionIndex: string;
+  transactionHash: string;
+  from: string;
+  to: string;
+  cumulativeGasUsed: string;
+  gasUsed: string;
+  contractAddress: string;
+  logs: UserOperationReceiptLog[];
+}
+
+export interface UserOperationReceiptLog {
+  blockHash: string;
+  blockNumber: string;
+  transactionIndex: string;
+  address: string;
+  logIndex: string;
+  data: string;
+  removed: boolean;
+  topics: string[];
+  transactionHash: string;
+  logsBloom: string;
+  root: string;
+  status: number;
+  effectiveGasPrice: string;
+}
 
 /**
  * Requires at least one of the properties to be set.
