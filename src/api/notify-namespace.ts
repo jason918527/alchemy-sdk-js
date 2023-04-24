@@ -1,6 +1,5 @@
 import { AxiosRequestConfig, Method } from 'axios';
-
-import { BigNumber } from '@ethersproject/bignumber';
+import { resolveAddress } from 'ethers';
 
 import { requestHttpWithBackoff } from '../internal/dispatch';
 import {
@@ -474,7 +473,7 @@ export class NotifyNamespace {
         filter.tokenId
           ? {
               contract_address: filter.contractAddress,
-              token_id: BigNumber.from(filter.tokenId).toString()
+              token_id: BigInt(filter.tokenId).toString()
             }
           : {
               contract_address: filter.contractAddress
@@ -614,7 +613,7 @@ export class NotifyNamespace {
     const resolvedAddresses: string[] = [];
     const provider = await this.config.getProvider();
     for (const address of addresses) {
-      const rawAddress = await provider.resolveName(address);
+      const rawAddress = await resolveAddress(address, provider);
       if (rawAddress === null) {
         throw new Error(`Unable to resolve the ENS address: ${address}`);
       }
@@ -633,15 +632,10 @@ export class NotifyNamespace {
 const WEBHOOK_NETWORK_TO_NETWORK: { [key: string]: Network } = {
   ETH_MAINNET: Network.ETH_MAINNET,
   ETH_GOERLI: Network.ETH_GOERLI,
-  ETH_ROPSTEN: Network.ETH_ROPSTEN,
-  ETH_RINKEBY: Network.ETH_RINKEBY,
-  ETH_KOVAN: Network.ETH_KOVAN,
   MATIC_MAINNET: Network.MATIC_MAINNET,
   MATIC_MUMBAI: Network.MATIC_MUMBAI,
   ARB_MAINNET: Network.ARB_MAINNET,
-  ARB_RINKEBY: Network.ARB_RINKEBY,
-  OPT_MAINNET: Network.OPT_MAINNET,
-  OPT_KOVAN: Network.OPT_KOVAN
+  OPT_MAINNET: Network.OPT_MAINNET
 };
 
 /** Mapping of the SDK's network representation the webhook API's network representation. */
@@ -701,7 +695,7 @@ function parseRawNftFiltersResponse(
       f.token_id
         ? {
             contractAddress: f.contract_address,
-            tokenId: BigNumber.from(f.token_id).toString()
+            tokenId: BigInt(f.token_id).toString()
           }
         : {
             contractAddress: f.contract_address
@@ -716,7 +710,7 @@ function nftFilterToParam(filter: NftFilter): RawNftFilterParam {
   return filter.tokenId
     ? {
         contract_address: filter.contractAddress,
-        token_id: BigNumber.from(filter.tokenId).toString()
+        token_id: BigInt(filter.tokenId).toString()
       }
     : {
         contract_address: filter.contractAddress

@@ -89,7 +89,7 @@ describe('E2E integration tests', () => {
   it('getTransactionReceipts()', async () => {
     const blockNumber = (await alchemy.core.getBlockNumber()) - 20;
     const response = await alchemy.core.getTransactionReceipts({
-      blockNumber: Utils.hexlify(blockNumber)
+      blockNumber: Utils.toBeHex(blockNumber)
     });
     expect(response.receipts?.length).toBeGreaterThan(0);
     expect(fromHex(response.receipts![0].blockNumber.toString())).toEqual(

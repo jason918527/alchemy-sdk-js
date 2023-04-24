@@ -1,4 +1,4 @@
-import { Network as NetworkFromEthers } from '@ethersproject/networks';
+import { FetchRequest, Network as NetworkFromEthers } from 'ethers';
 
 import { Network } from '../types/types';
 
@@ -54,9 +54,7 @@ export const EthersNetwork = {
   [Network.ARB_GOERLI]: 'arbitrum-goerli',
   [Network.MATIC_MAINNET]: 'matic',
   [Network.MATIC_MUMBAI]: 'maticmum',
-  [Network.ASTAR_MAINNET]: 'astar-mainnet',
-  [Network.POLYGONZKEVM_MAINNET]: 'polygonzkevm-mainnet',
-  [Network.POLYGONZKEVM_TESTNET]: 'polygonzkevm-testnet'
+  [Network.ASTAR_MAINNET]: 'astar-mainnet'
 };
 
 /**
@@ -65,26 +63,9 @@ export const EthersNetwork = {
  * in the provider.
  */
 export const CustomNetworks: { [key: string]: NetworkFromEthers } = {
-  'arbitrum-goerli': {
-    chainId: 421613,
-    name: 'arbitrum-goerli'
-  },
-  'astar-mainnet': {
-    chainId: 592,
-    name: 'astar-mainnet'
-  },
-  sepolia: {
-    chainId: 11155111,
-    name: 'sepolia'
-  },
-  'polygonzkevm-mainnet': {
-    chainId: 1101,
-    name: 'polygonzkevm-mainnet'
-  },
-  'polygonzkevm-testnet': {
-    chainId: 1442,
-    name: 'polygonzkevm-testnet'
-  }
+  'astar-mainnet': new NetworkFromEthers('astar-mainnet', 592),
+  'polygonzkevm-mainnet': new NetworkFromEthers('polygonzkevm-mainnet', 1101),
+  'polygonzkevm-testnet': new NetworkFromEthers('polygonzkevm-testnet', 1442)
 };
 
 export function noop(): void {

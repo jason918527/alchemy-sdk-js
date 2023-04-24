@@ -83,12 +83,12 @@ describe('DebugNamespace', () => {
     const finalizedBlock = await alchemy.core.getBlock(
       CommitmentLevel.FINALIZED
     );
-    const response = await alchemy.debug.traceBlock(finalizedBlock.number, {
+    const response = await alchemy.debug.traceBlock(finalizedBlock!.number, {
       type: DebugTracerType.CALL_TRACER,
       onlyTopCall: true
     });
     const response2 = await alchemy.debug.traceBlock(
-      Utils.hexStripZeros(Utils.hexValue(finalizedBlock.number)),
+      Utils.stripZerosLeft(Utils.toBeHex(finalizedBlock!.number)),
       {
         type: DebugTracerType.CALL_TRACER,
         onlyTopCall: true

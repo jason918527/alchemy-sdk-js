@@ -6,6 +6,20 @@ describe('E2E integration tests', () => {
   beforeAll(async () => {
     await loadAlchemyEnv();
   });
+
+  it('resolves', async () => {
+    const alchemy = new Alchemy({
+      apiKey: process.env.ALCHEMY_API_KEY,
+      network: Network.ETH_MAINNET
+    });
+
+    const p = await alchemy.config.getProvider();
+    const res = await p.resolveName(
+      '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+    );
+    console.log(res);
+  });
+
   describe('handles networks', () => {
     // TODO(deprecation): Remove after removing deprecated networks.
     const deprecated = ['ropsten', 'kovan', 'rinkeby'];
@@ -39,7 +53,8 @@ describe('E2E integration tests', () => {
             network
           });
           const done = new Deferred<void>();
-          alchemy.ws.once('block', () => {
+          // TODO(v6): enable test
+          alchemy.ws.once('block' as any, () => {
             alchemy.ws.removeAllListeners();
             done.resolve();
           });
